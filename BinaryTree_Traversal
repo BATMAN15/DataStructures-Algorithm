@@ -1,0 +1,119 @@
+#include<iostream>
+#include<vector>
+#include<stack>
+using namespace std;
+
+struct TreeNode{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+/*-----------------------------preorder recursion---------------------------------*/
+void preOrder1(TreeNode *root, vector<int> &res)     //递归前序遍历 
+{
+	if (root != NULL)
+	{
+		res.push_back(root->val);
+		preOrder1(root->left, res);
+		preOrder1(root->right, res);
+	}
+}
+
+/*-----------------------------preorder nonrecursion---------------------------------*/
+void preorder2(TreeNode *root, vector<int> &res)	//非递归前序遍历 
+{
+	stack<TreeNode*> st;
+	if (root != NULL)
+		st.push(root);
+	while (!st.empty())
+	{
+		TreeNode *t = st.top();
+		st.pop();
+		res.push_back(t->val);
+		if (t->right != NULL)
+			st.push(t->right);
+		if (t->left != NULL)
+			st.push(t->left);
+	}
+	return;
+}
+
+/*-----------------------------midorder recursion---------------------------------*/
+void midOrder1(TreeNode *root, vector<int> &res)     //递归前序遍历 
+{
+	if (root != NULL)
+	{
+		preOrder1(root->left, res);
+		res.push_back(root->val);
+		preOrder1(root->right, res);
+	}
+}
+
+/*-----------------------------midorder nonrecursion---------------------------------*/
+void midOrder2(TreeNode *root, vector<int> &res)      //非递归中序遍历
+{
+	stack<TreeNode*> s;
+	TreeNode *p = root;
+	while (p != NULL || !s.empty())
+	{
+		while (p != NULL)
+		{
+			s.push(p);
+			p = p->left;
+		}
+		if (!s.empty())
+		{
+			p = s.top();
+			res.push_back(p->val);
+			s.pop();
+			p = p->right;
+		}
+	}
+	return;
+}
+
+/*-----------------------------postorder recursion---------------------------------*/
+void postOrder1(TreeNode *root, vector<int> &res)    //递归后序遍历
+{
+	if (root != NULL)
+	{
+		postOrder1(root->left);
+		postOrder1(root->right);
+		res.push_back(root->val);
+	}
+}
+
+/*-----------------------------postorder nonrecursion---------------------------------*/
+void postorder2(TreeNode *root, vector<int>res)		//非递归后序遍历 
+{
+	stack<TreeNode*> s;
+	TreeNode *cur = nullptr;
+	TreeNode *pre = NULL;
+	if (root != nullptr)
+		s.push(root);
+	while (!s.empty())
+	{
+		cur = s.top();
+		if ((cur->left == NULL && cur->right == NULL) || (pre != NULL && (pre == cur->left || pre == cur->right)))
+		{
+			res.push_back(cur->val);
+			s.pop();
+			pre = cur;
+		}
+		else
+		{
+			if (cur->right != NULL)
+				s.push(cur->right);
+			if (cur->left != NULL)
+				s.push(cur->left);
+		}
+	}
+	return;
+}
+
+int main()
+{
+	system("pause");
+}
