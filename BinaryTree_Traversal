@@ -41,7 +41,7 @@ void preorder2(TreeNode *root, vector<int> &res)	//非递归前序遍历
 }
 
 /*-----------------------------midorder recursion---------------------------------*/
-void midOrder1(TreeNode *root, vector<int> &res)     //递归前序遍历 
+void midOrder1(TreeNode *root, vector<int> &res)     //递归中序遍历 
 {
 	if (root != NULL)
 	{
