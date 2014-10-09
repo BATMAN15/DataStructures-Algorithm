@@ -1,0 +1,47 @@
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+
+string LCS(string str1, string str2)
+{
+	int rowsize = str2.size();
+	int columnsize = str1.size();
+	string res("");
+	if (rowsize < 1 || columnsize < 1)
+		return res;
+	int maxlen = 0;
+	int pos = 0;
+	vector<int>arr(columnsize, 0);
+	vector<int>temp(arr);
+	for (int i = 0; i < rowsize; ++i)
+	{
+		arr.assign(columnsize, 0);
+		for (int j = 0; j < columnsize; ++j)
+		{
+			if (str2[i] == str1[j])
+			{
+				if (j == 0)
+					arr[j] = 1;
+				else
+					arr[j] = temp[j - 1] + 1;
+				if (arr[j] > maxlen)
+				{
+					maxlen = arr[j];
+					pos = j;
+				}
+			}
+		}
+		temp.assign(arr.begin(), arr.end());
+	}
+	res = str1.substr(pos - maxlen + 1, maxlen);
+	return res;
+}
+
+int main()
+{
+	string str1("acbac");
+	string str2("acaccbabb");
+	cout << LCS(str1, str2) << endl;
+	system("pause");
+}
