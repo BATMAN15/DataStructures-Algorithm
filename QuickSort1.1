@@ -1,0 +1,55 @@
+#include<iostream>
+#include<ctime>
+using namespace std;
+
+const int N = 1000;
+void swap(int &a, int &b)
+{
+	int temp = a;
+	a = b;
+	b = temp;
+}
+
+void Qsort(int Array[], int begin, int end)
+{
+	if (begin >= end)
+		return;
+	int key = Array[begin];
+	int i = begin, j = end;
+	while (i < j)
+	{
+		while (i < j && Array[j] >= key)
+			--j;
+		Array[i] = Array[j];
+		while (i < j && Array[i] <= key)
+			++i;
+		Array[j] = Array[i];
+	}
+	Array[i] = key;
+	Qsort(Array, begin, i - 1);
+	Qsort(Array, i + 1, end);
+}
+
+void QuickSort(int Array[], int Num)
+{
+	Qsort(Array, 0, Num - 1);
+}
+
+int main()
+{
+	int Array[N];
+	srand((unsigned)time(nullptr));
+	for (int i = 0; i < N; ++i)
+		Array[i] = rand() % N + 3;
+
+	for (int i = 0; i < N; ++i)
+		cout << Array[i] << " ";
+	cout << endl;
+	cout << "---------------------------------------" << endl;
+
+	QuickSort(Array, N);
+	for (int i = 0; i < N; ++i)
+		cout << Array[i] << "  ";
+	cout << endl;
+	system("pause");
+}
