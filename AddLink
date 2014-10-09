@@ -1,0 +1,123 @@
+/*----------------------------------------------------------------------------------------------
+输入是两个链表，链表代表一个n位数，且低位在前高位在后，计算两个链表的和，并以链表的形式输出
+如：1->4->7,3->6->7->2,输出4->0->5->3;
+------------------------------------------------------------------------------------------------*/
+#include<iostream>
+#include<ctime>
+using namespace std;
+
+class node
+{
+public:
+	int val;
+	class node *next;
+	node(int x) :val(x), next(NULL){}
+};
+
+class result
+{
+public:
+	node *AddLink(node *l1, node *l2)
+	{
+		node *result = NULL;
+		int carry = 0;
+		int temp;
+		node *p = NULL;
+		while (l1 != NULL&&l2 != NULL)
+		{
+			temp = l1->val + l2->val+carry;
+			carry = temp / 10;
+			
+			if (NULL == result)
+			{
+				result = new node(temp % 10);
+				p = result;
+			}
+			else
+			{
+				p->next = new node(temp % 10);
+				p = p->next;
+			}
+			l1 = l1->next;
+			l2 = l2->next;
+		}
+		while (l1)
+		{
+			temp = l1->val + carry;
+			carry = temp / 10;
+			if (NULL == result)
+			{
+				result = new node(temp%10);
+				p = result;
+			}
+			else
+			{
+				p->next = new node(temp % 10);
+				p = p->next;
+			}
+			l1 = l1->next;
+		}
+		while (l2)
+		{
+			temp = l2->val + carry;
+			carry = temp / 10;
+			if (NULL == result)
+			{
+				result = new node(temp%10);
+				p = result;
+			}
+			else
+			{
+				p->next = new node(temp % 10);
+				p = p->next;
+			}
+			l2 = l2->next;
+		}
+		if (carry)
+			p->next = new node(carry);
+		return result;
+	}
+};
+void initalization(node* &l1, node* &l2)
+{
+	srand((unsigned)time(NULL));
+	int k = 3;
+	node *p = NULL;
+	while (k--)
+	{
+		if (l1 == NULL)
+		{
+			l1 = new node(rand()%10);
+			p = l1;
+		}
+		else
+		{
+			p->next = new node(rand()%10);
+			p = p->next;
+		}
+	}
+	k = 5;
+	while (k--)
+	{
+		if (l2 == NULL)
+		{
+			l2 = new node(rand() % 10);
+			p = l2;
+		}
+		else
+		{
+			p->next = new node(rand() % 10);
+			p = p->next;
+		}
+	}
+}
+
+int main()
+{
+	node *l1 = NULL;
+	node *l2 = NULL;
+	initalization(l1, l2);
+	result r;
+	node *p = r.AddLink(l1, l2);
+}
+
