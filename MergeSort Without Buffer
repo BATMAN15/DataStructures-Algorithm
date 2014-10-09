@@ -1,0 +1,84 @@
+#include<iostream>
+#include<algorithm>
+#include<ctime>
+using namespace std;
+
+template<class T>
+class MS{
+public:
+	void MergeSort(T* first, T* last)
+	{
+		if (first == last || first + 1 == last)
+			return;
+		T* mid = first + ((last - first) >> 1);
+		MergeSort(first, mid);
+		MergeSort(mid, last);
+		Merge(first, mid, last);
+	}
+private:
+	void Merge(T* first, T* mid, T* last)
+	{
+		typedef  typename iterator_traits<T*>::difference_type Difference;
+		Difference len1 = distance(first, mid);
+		Difference len2 = distance(mid, last);
+		if (len1 == 0 || len2 == 0)
+			return;
+		if (len1 + len2 == 2)
+		{
+			if (*mid < *first)
+				swap(first, mid);
+			return;
+		}
+		T* first_cut = first;
+		T* second_cut = mid;
+		Difference len11 = 0;
+		Difference len22 = 0;
+		if (len1 > len2)
+		{
+			len11 = len1 >> 1;
+			advance(first_cut, len11);
+			second_cut = lower_bound(mid, last, *first_cut);
+			len22 = distance(mid, second_cut);
+		}
+		else
+		{
+			len22 = len2 >> 1;
+			advance(second_cut, len22);
+			first_cut = upper_bound(first, mid, *second_cut);
+			len11 = distance(first, first_cut);
+		}
+		rotate(first_cut, mid, second_cut);
+		T* newmid = first_cut;
+		advance(newmid, len22);
+		Merge(first, first_cut, newmid);
+		Merge(newmid, second_cut, last);
+	}
+	void swap(T* a, T* b)
+	{
+		T temp = *a;
+		*a = *b;
+		*b = temp;
+	}
+};
+
+int main()
+{
+	const int N = 500;
+	int *Array = new int[N];
+	srand((unsigned)time(nullptr));
+	for (int i = 0; i < N; ++i)
+	{
+		*(Array + i) = rand() % (N << 1);
+		cout << *(Array + i) << "  ";
+	}
+	cout << endl;
+	cout << "-------------------------------------------------------------------------------" << endl;
+	MS<int> ms;
+	ms.MergeSort(Array, Array + N);
+
+	for (int i = 0; i < N; ++i)
+		cout << *(Array + i) << "  ";
+	cout << endl;
+
+	system("pause");
+}
