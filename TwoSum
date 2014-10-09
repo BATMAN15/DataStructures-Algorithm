@@ -1,0 +1,57 @@
+/*======================================================================================================================
+输入一个integer型数组和一个integer型整数target，输出数组中两个数相加结果等于target
+=======================================================================================================================*/
+#include<iostream>
+#include<vector>
+#include<iterator>
+#include<map>
+#include<algorithm>
+using namespace std;
+
+typedef pair<vector<int>::iterator, vector<int>::iterator> iterator_pair;
+
+iterator_pair TwoSum(vector<int> &coll, const int sum)
+{
+	vector<int>::iterator first = coll.begin();
+	vector<int>::iterator last = --coll.end();
+	int temp;
+	while (first != last)
+	{
+		temp = *first + *last;
+		if (temp > sum)
+			last--;
+		else if (temp < sum)
+			first++;
+		else
+			break;
+	}
+	temp = *first + *last;
+	iterator_pair p(coll.end(), coll.end());
+	if (temp == sum)
+	{
+		p.first = first;
+		p.second = last;
+	}
+	return p;
+}
+
+int main()
+{
+	vector<int> array;
+	array.push_back(7);
+	array.push_back(3);
+	array.push_back(8);
+	array.push_back(9);
+	array.push_back(12);
+	array.push_back(20);
+	array.push_back(76);
+
+	sort(array.begin(), array.end());
+	copy(array.begin(), array.end(), ostream_iterator<int>(cout, " "));
+	iterator_pair p;
+	p = TwoSum(array, 16);
+	cout << endl;
+	cout << *p.first << "    " << *p.second << endl;
+	system("pause");
+	return 0;
+}
