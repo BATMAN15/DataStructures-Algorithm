@@ -1,0 +1,90 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+class MatrixMultipli
+{
+public:
+	vector<vector<int> > MatrixMul(vector<vector<int> > a, vector<vector<int> > b) //效率较高，考虑了缓存优化
+	{
+		int m = a.size();
+		int n = b[0].size();
+		vector<vector<int> >result(m, vector<int>(n, 0));
+		for (int i = 0; i < m; ++i)
+		{
+			for (int k = 0; k < b.size(); ++k)
+			{
+				int r = a[i][k];
+				for (int j = 0; j < n; ++j)
+				{
+					result[i][j] += r * b[k][j];
+				}
+			}
+		}
+		return result;
+	}
+
+	vector<vector<int> > MatrixMul1(vector<vector<int> > a, vector<vector<int> > b)//效率较低，没有考虑缓存
+	{
+		int m = a.size();
+		int n = b[0].size();
+		vector<vector<int> >result(m, vector<int>(n, 0));
+		for (int i = 0; i < m; ++i)
+		{
+			for (int j = 0; j < n; ++j)
+			{
+				int r = 0;
+				for (int k = 0; k < b.size(); ++k)
+				{
+					r += a[i][k] * b[k][j];
+				}
+				result[i][j] = r;
+			}
+		}
+		return result;
+	}
+};
+
+int main()
+{
+	vector<vector<int> > a;
+	vector<vector<int> > b;
+	vector<int> t;
+	t.push_back(1);
+	t.push_back(2);
+	t.push_back(3);
+	t.push_back(4);
+	a.push_back(t);
+	t.clear();
+	
+	t.push_back(2);
+	t.push_back(3);
+	t.push_back(4);
+	t.push_back(5);
+	a.push_back(t);
+	t.clear();
+	
+	t.push_back(3);
+	t.push_back(4);
+	t.push_back(5);
+	t.push_back(6);
+	a.push_back(t);
+	t.clear();
+	t.push_back(0);
+	b.push_back(t);
+	t.clear();
+	t.push_back(1);
+	b.push_back(t);
+	t.clear();
+	t.push_back(2);
+	b.push_back(t);
+	t.clear();
+	t.push_back(3);
+	b.push_back(t);
+	t.clear();
+	MatrixMultipli m;
+	vector<vector<int> > res1 = m.MatrixMul(a, b);
+	vector<vector<int> > res2 = m.MatrixMul1(a, b);
+	system("pause");
+	return 0;
+}
