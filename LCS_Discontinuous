@@ -1,0 +1,70 @@
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+
+string LCS(string str1, string str2)
+{
+	int len1 = str1.size();
+	int len2 = str2.size();
+	string res("");
+	if (len1 < 1 || len2 < 1)
+		return res;
+	vector<vector<int> >dp(len1 + 1, vector<int>(len2 + 1, 0));
+	vector<vector<int> >map(len1, vector<int>(len2, -2));
+	int maxlen = 0;
+	int pos = 0;
+	for (int i = 1; i <= len1; ++i)
+	{
+		for (int j = 1; j <= len2; ++j)
+		{
+			if (str1[i - 1] == str2[j - 1])
+			{
+				dp[i][j] = dp[i - 1][j - 1] + 1;
+				map[i - 1][j - 1] = 0;
+			}	
+			else
+			{
+				if (dp[i - 1][j] > dp[i][j - 1])
+				{
+					dp[i][j] = dp[i - 1][j];
+					map[i - 1][j - 1] = 1;
+				}	
+				else
+				{
+					dp[i][j] = dp[i][j - 1];
+					map[i - 1][j - 1] = -1;
+				}	
+			}
+			if (dp[i][j] > maxlen)
+			{
+				maxlen = dp[i][j];
+			}
+		}
+	}
+	int i = len1 - 1;
+	int j = len2 - 1;
+	string str;
+	while (i >= 0 && j >= 0)
+	{
+		if (map[i][j] == 0)
+		{
+			str.append(str1.substr(i,1));
+			--i, --j;
+		}
+		else if (map[i][j] == 1)
+			--i;
+		else
+			--j;
+	}
+	res.assign(str.rbegin(), str.rend());
+	return res;
+}
+
+int main()
+{
+	string str1("adcbaabcd");
+	string str2("abcbcad");
+	cout << LCS(str1, str2) << endl;
+	system("pause");
+}
