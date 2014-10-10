@@ -19,7 +19,7 @@ int LIS(int *A, int len)
 		if (L[i] > Max)
 			Max = L[i];
 	}
-	delete L;
+	delete[] L;
 	return Max;
 }
 
