@@ -1,3 +1,7 @@
+/*
+数组最长递增子序列
+*/
+
 #include<iostream>
 using namespace std;
 
