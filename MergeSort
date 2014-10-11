@@ -1,0 +1,78 @@
+#include<iostream>
+#include<ctime>
+using namespace std;
+
+const int NUM = 1000;
+void Merge(int *A, int *B, int leftpos, int rightpos, int rightend)
+{
+	int left = leftpos;
+	int i = leftpos, j = rightpos;
+	int lend = rightpos - 1, rend = rightend;
+	while (i <= lend && j <= rend)
+	{
+		if (A[i] < A[j])
+			B[leftpos++] = A[i++];
+		else
+			B[leftpos++] = A[j++];
+	}
+
+	while (i <= lend)
+		B[leftpos++] = A[i++];
+	while (j <= rend)
+		B[leftpos++] = A[j++];
+
+	for (i = left; i <= rightend; ++i)
+		A[i] = B[i];
+}
+
+void MSort(int *A, int left, int right, int *B)
+{
+	if (left < right)
+	{
+		int center = left + ((right - left) >> 1);
+		MSort(A, left, center, B);
+		MSort(A, center + 1, right, B);
+		Merge(A, B, left, center + 1, right);
+	}
+}
+
+void MergeSort(int *A, int len)
+{
+	int *B = new int[len];
+	if (B)
+	{
+		MSort(A, 0, len-1, B);
+		delete[] B;
+	}
+	else
+		cout << "Malloc Memory Error!" << endl;
+}
+
+int main()
+{
+	srand((unsigned)time(nullptr));
+
+	int A[NUM];
+	for (int i = 0; i < NUM; ++i)
+		A[i] = rand() % 500;
+	
+	for (int i = 0; i < NUM; ++i)
+	{
+		cout << A[i] << " ";
+		if (i > 0 && i % 10 == 0)
+			cout << endl;
+	}
+	cout << endl;
+	cout << "----------------------------------------" << endl;
+	MergeSort(A, NUM);
+
+	for (int i = 0; i < NUM; ++i)
+	{
+		cout << A[i] << " ";
+		if (i > 0 && i % 10 == 0)
+			cout << endl;
+	}
+	cout << endl;
+	system("pause");
+	return 0;
+}
