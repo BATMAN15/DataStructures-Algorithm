@@ -1,0 +1,43 @@
+#include<iostream>
+using namespace std;
+
+struct BTree{
+	int val;
+	struct BTree *left;
+	struct BTree *right;
+};
+
+typedef struct BTree* BT;
+typedef struct BTree Node;
+
+void Convert(BT root, BT &ListHead)
+{
+	if (!root)
+		return;
+	BT current = root;
+	if (root->left)
+		Convert(root->left, ListHead);
+	current->left = ListHead;
+	if (ListHead)
+		ListHead->right = current;
+	ListHead = current;
+	if (root->right)
+		Convert(root->right, ListHead);
+
+}
+
+BT ConvertBSTtoList(BT root)
+{
+	if (!root)
+		return nullptr;
+	BT ListHead = nullptr;
+	Convert(root, ListHead);
+	while (ListHead && ListHead->left)
+		ListHead = ListHead->left;
+	return ListHead;
+}
+
+int main()
+{
+	system("pause");
+}
