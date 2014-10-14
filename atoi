@@ -1,0 +1,60 @@
+#include<iostream>
+using namespace std;
+
+const int MIN = 0x80000000;
+const int MAX = 0x7FFFFFFF;
+enum state{
+	overflow,
+	allright,
+	inputerror
+};
+state valid;
+int myatoi(char *str)
+{
+	bool minus = true;
+	if (str == nullptr || strlen(str) == 0)
+		return 0;
+	while (*str != '\0' && *str == ' ')
+		str++;
+	if (*str == '-')
+	{
+		minus = false;
+		++str;
+	}
+	else if (*str == '+')
+		++str;
+	valid = allright;
+	int res = 0;
+	while (*str != '\0')
+	{
+		if (*str >= '0' && *str <= '9')
+		{
+			res = res * 10 + (*str - '0');
+			if ((minus && (unsigned int)res > MAX) || (!minus && (unsigned)res > MAX+1))
+			{
+				valid = overflow;
+				return 0;
+			}
+		}	
+		else
+		{
+			valid = inputerror;
+			break;
+		}
+		str++;
+	}
+	return res;
+}
+
+int main()
+{
+	cout << myatoi("  +16 2") << endl;
+	if (valid == allright)
+		cout << "ok" << endl;
+	else if (valid == overflow)
+		cout << "overflow" << endl;
+	else
+		cout << "inputerror" << endl;
+	system("pause");
+	return 0;
+}
