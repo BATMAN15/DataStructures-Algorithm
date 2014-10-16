@@ -1,8 +1,8 @@
 #include<iostream>
 using namespace std;
 
-const int MIN = 0x80000000;
-const int MAX = 0x7FFFFFFF;
+const unsigned int MIN = 0x80000000;
+const unsigned int MAX = 0x7FFFFFFF;
 enum state{
 	overflow,
 	allright,
