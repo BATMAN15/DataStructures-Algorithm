@@ -1,0 +1,35 @@
+#include<iostream>
+using namespace std;
+
+struct Node{
+	int val;
+	struct Node *left;
+	struct Node *right;
+	Node(int i) :val(i), left(nullptr), right(nullptr){}
+};
+typedef struct Node* Btree;
+int MaxLen = 0;
+int FindMaxLen(Btree root)
+{
+	if (root == nullptr)
+		return 0;
+	int leftlen = FindMaxLen(root->left);
+	int rightlen = FindMaxLen(root->right);
+	if (leftlen + rightlen + 1 > MaxLen)
+		MaxLen = leftlen + rightlen + 1;
+	int temp = leftlen > rightlen ? (leftlen + 1) : (rightlen + 1);
+	return temp;
+}
+
+int main()
+{
+	Btree root = new struct Node(1);
+	root->left = new struct Node(2);
+//	root->right = new struct Node(3);
+	root->left->left = new struct Node(4);
+//	root->left->right = new struct Node(5);
+	root->left->left->left = new struct Node(6);
+	FindMaxLen(root);
+	cout << MaxLen << endl;
+	system("pause");
+}
