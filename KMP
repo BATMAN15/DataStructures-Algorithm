@@ -1,0 +1,52 @@
+#include<iostream>
+using namespace std;
+
+void getnext(char *needle, int *next)
+{
+	int n = strlen(needle);
+	next[0] = 0;
+	int index = 0;
+	for (int i = 1; i < n; ++i)
+	{
+		index = next[i - 1];
+		while (index > 0 && needle[index] != needle[i])
+			index = needle[index];
+		if (needle[index] == needle[i])
+			next[i] = index + 1;
+		else
+			next[i] = 0;
+	}
+	return;
+}
+
+char *Strstr(char *haystack, char *needle)
+{
+	if (haystack == nullptr || needle == nullptr || strlen(haystack) < strlen(needle))
+		return nullptr;
+
+	int n = strlen(needle);
+	int *next = new int[n];
+	getnext(needle, next);
+	int haystack_index = 0;
+	int needle_index = 0;
+	while (haystack_index < strlen(haystack) && needle_index < strlen(needle))
+	{
+		if (haystack[haystack_index] == needle[needle_index])
+			haystack_index++, needle_index++;
+		else if (needle_index == 0)
+			haystack_index++;
+		else
+			needle_index = next[needle_index - 1];
+	}
+	if (needle[needle_index] == '\0')
+		return haystack + (haystack_index - strlen(needle));
+	return nullptr;
+}
+
+int main()
+{
+	char  *ch1 = "qwyewewr";
+	char *ch2 = "wew";
+	cout << Strstr(ch1, ch2) << endl;
+	system("pause");
+}
